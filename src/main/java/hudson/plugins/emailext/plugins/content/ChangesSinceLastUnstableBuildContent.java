@@ -34,11 +34,11 @@ public class ChangesSinceLastUnstableBuildContent
     {
         AbstractBuild<P, B> firstIncludedBuild = build;
 
-			B prev = firstIncludedBuild.getPreviousBuild();
-			while (prev != null && prev.getResult().isWorseThan(Result.UNSTABLE)) {
-				firstIncludedBuild = prev;
-				prev = firstIncludedBuild.getPreviousBuild();
-			}
+            B prev = firstIncludedBuild.getPreviousBuild();
+            while (prev != null && prev.getResult().isWorseThan(Result.UNSTABLE)) {
+                firstIncludedBuild = prev;
+                prev = firstIncludedBuild.getPreviousBuild();
+            }
 
         return firstIncludedBuild;
     }

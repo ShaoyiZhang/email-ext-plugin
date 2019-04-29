@@ -87,7 +87,7 @@ public class ExtendedEmailPublisherDescriptor
      * The maximum size of all the attachments (in bytes)
      */
     private long maxAttachmentSize = -1;
-    
+
     private boolean overrideGlobalSettings;
 
     @Override
@@ -217,11 +217,11 @@ public class ExtendedEmailPublisherDescriptor
     public long getMaxAttachmentSize() {
         return maxAttachmentSize;
     }
-    
+
     public long getMaxAttachmentSizeMb() {
         return maxAttachmentSize / (1024 * 1024);
     }
-    
+
     public boolean getOverrideGlobalSettings()
     {
         return overrideGlobalSettings;
@@ -378,9 +378,9 @@ public class ExtendedEmailPublisherDescriptor
         throws IOException, ServletException
     {
         return new EmailRecepientUtils().validateFormRecipientList( value );
-		}
+        }
 
-    
+
     public FormValidation doMaxAttachmentSizeCheck(@QueryParameter final String value)
             throws IOException, ServletException {
         try {
@@ -395,4 +395,4 @@ public class ExtendedEmailPublisherDescriptor
             return FormValidation.error(e.getMessage());
         }
     }
-	}
+    }

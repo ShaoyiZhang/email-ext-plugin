@@ -68,46 +68,46 @@ public class AttachmentUtils implements Serializable {
             return file.getName();
         }
     }
-    
+
     private static class LogFileDataSource implements DataSource {
-        
+
         private static final String DATA_SOURCE_NAME = "build.log";
-        
+
         private final AbstractBuild<?,?> build;
         private final boolean compress;
-        
+
         public LogFileDataSource(AbstractBuild<?,?> build, boolean compress) {
             this.build = build;
             this.compress = compress;
         }
-        
+
         public InputStream getInputStream() throws IOException {
             InputStream res;
             long logFileLength = build.getLogText().length();
             long pos = 0;
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            
+
             while(pos < logFileLength) {
                 pos = build.getLogText().writeLogTo(pos, bao);
-            }            
-            
+            }
+
             res = new ByteArrayInputStream(bao.toByteArray());
             if(compress) {
                 ZipDataSource z = new ZipDataSource(getName(), res);
-                res = z.getInputStream();            
+                res = z.getInputStream();
             }
             return res;
         }
-        
+
         public OutputStream getOutputStream() throws IOException {
             throw new IOException("Unsupported");
         }
-        
+
         public String getContentType() {
             return MimetypesFileTypeMap.getDefaultFileTypeMap()
                     .getContentType(build.getLogFile());
         }
-        
+
         public String getName() {
             return DATA_SOURCE_NAME;
         }
@@ -153,7 +153,7 @@ public class AttachmentUtils implements Serializable {
         }
         return attachments;
     }
-    
+
     @Deprecated
     public void attach(Multipart multipart, ExtendedEmailPublisher publisher, AbstractBuild<?, ?> build, BuildListener listener) {
         final ExtendedEmailPublisherContext context = new ExtendedEmailPublisherContext(publisher, build, null, listener);
@@ -164,10 +164,10 @@ public class AttachmentUtils implements Serializable {
         final ExtendedEmailPublisherContext context = new ExtendedEmailPublisherContext(publisher, build, launcher, listener);
         attach(multipart, context);
     }
-    
+
     public void attach(Multipart multipart, ExtendedEmailPublisherContext context) {
         try {
-            
+
             List<MimeBodyPart> attachments = getAttachments(context);
             if (attachments != null) {
                 for (MimeBodyPart attachment : attachments) {
@@ -180,9 +180,9 @@ public class AttachmentUtils implements Serializable {
             context.getListener().error("Error attaching items to message: " + e.getMessage());
         } catch (InterruptedException e) {
             context.getListener().error("Interrupted in processing attachments: " + e.getMessage());
-        }    
+        }
     }
-    
+
     public static void attachBuildLog(ExtendedEmailPublisherContext context, Multipart multipart, boolean compress) {
         try {
             File logFile = context.getBuild().getLogFile();
@@ -193,13 +193,13 @@ public class AttachmentUtils implements Serializable {
                         + " too large for maximum attachments size");
                 return;
             }
-            
+
             DataSource fileSource;
             MimeBodyPart attachment = new MimeBodyPart();
             if (compress) {
                 context.getListener().getLogger().println("Request made to compress build log");
             }
-            
+
             fileSource = new LogFileDataSource(context.getBuild(), compress);
             attachment.setFileName("build." + (compress ? "zip" : "log"));
             attachment.setDataHandler(new DataHandler(fileSource));
@@ -214,7 +214,7 @@ public class AttachmentUtils implements Serializable {
         final ExtendedEmailPublisherContext context = new ExtendedEmailPublisherContext(publisher, build, null, listener);
         attachBuildLog(context, multipart, compress);
     }
-    
+
     public static void attachBuildLog(ExtendedEmailPublisher publisher, Multipart multipart, AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener, boolean compress) {
         final ExtendedEmailPublisherContext context = new ExtendedEmailPublisherContext(publisher, build, launcher, listener);
         attachBuildLog(context, multipart, compress);

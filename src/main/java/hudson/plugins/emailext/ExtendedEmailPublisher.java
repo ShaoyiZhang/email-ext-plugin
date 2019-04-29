@@ -292,7 +292,7 @@ public class ExtendedEmailPublisher extends Notifier {
         MimeBodyPart bp1 = new MimeBodyPart();
         setContent(type, build, bp1);
         multipart.addBodyPart(bp1);
-        
+
         EnvVars env = build.getEnvironment(listener);
 
         // Get the recipients from the global list of addresses
@@ -350,7 +350,7 @@ public class ExtendedEmailPublisher extends Notifier {
             listener.getLogger().println("Request made to attach build log");
             AttachmentUtils.attachBuildLog(context, multipart, compressBuildLog);
         }
-        
+
         msg.setContent(multipart);
 
         return msg;
@@ -361,7 +361,7 @@ public class ExtendedEmailPublisher extends Notifier {
         String subject = new ContentBuilder().transformText(type.getSubject(), this, type, build);
         msg.setSubject(subject, CHARSET);
     }
-    
+
     private void setContent(final EmailType type, final AbstractBuild<?, ?> build, MimeBodyPart bp)
         throws MessagingException {
         final String text = new ContentBuilder().transformText(type.getBody(), this, type, build);

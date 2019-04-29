@@ -6,56 +6,56 @@ import hudson.plugins.emailext.plugins.EmailTrigger;
 import hudson.plugins.emailext.plugins.EmailTriggerDescriptor;
 
 public class SuccessTrigger extends EmailTrigger {
-	public static final String TRIGGER_NAME = "Success";
+    public static final String TRIGGER_NAME = "Success";
 
-	@Override
-	public boolean trigger(AbstractBuild<?,?> build) {
-		Result buildResult = build.getResult();
-		
-		if (buildResult == Result.SUCCESS) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public EmailTriggerDescriptor getDescriptor() {
-		return DESCRIPTOR;
-	}
-	
-	public static DescriptorImpl DESCRIPTOR = new DescriptorImpl();
-	
-	public static final class DescriptorImpl extends EmailTriggerDescriptor {
-				
-		@Override
-		public String getTriggerName() {
-			return TRIGGER_NAME;
-		}
+    @Override
+    public boolean trigger(AbstractBuild<?,?> build) {
+        Result buildResult = build.getResult();
 
-		@Override
-		public EmailTrigger newInstance() {
-			return new SuccessTrigger();
-		}
-		
-		@Override
-		public String getHelpText() {
-			return "An email will be sent if the build status is \"Successful\". "+
-					"If the \"Fixed\" trigger is configured, and the previous build " +
-					"status was \"Failure\" or \"Unstable\", then the \"Fixed\" trigger " +
-					"will send an email instead.";
-		}
-		
-	}
-	
-	@Override
-	public boolean getDefaultSendToDevs() {
-		return true;
-	}
+        if (buildResult == Result.SUCCESS) {
+            return true;
+        }
 
-	@Override
-	public boolean getDefaultSendToList() {
-		return false;
-	}
+        return false;
+    }
+
+    @Override
+    public EmailTriggerDescriptor getDescriptor() {
+        return DESCRIPTOR;
+    }
+
+    public static DescriptorImpl DESCRIPTOR = new DescriptorImpl();
+
+    public static final class DescriptorImpl extends EmailTriggerDescriptor {
+
+        @Override
+        public String getTriggerName() {
+            return TRIGGER_NAME;
+        }
+
+        @Override
+        public EmailTrigger newInstance() {
+            return new SuccessTrigger();
+        }
+
+        @Override
+        public String getHelpText() {
+            return "An email will be sent if the build status is \"Successful\". "+
+                    "If the \"Fixed\" trigger is configured, and the previous build " +
+                    "status was \"Failure\" or \"Unstable\", then the \"Fixed\" trigger " +
+                    "will send an email instead.";
+        }
+
+    }
+
+    @Override
+    public boolean getDefaultSendToDevs() {
+        return true;
+    }
+
+    @Override
+    public boolean getDefaultSendToList() {
+        return false;
+    }
 
 }
