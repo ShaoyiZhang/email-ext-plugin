@@ -43,6 +43,10 @@ public abstract class EmailTrigger {
         return false;
     }
 
+	public boolean getDefaultSendToRequester() {
+		return false;
+	}
+
     /**
      * Should this trigger run before the build?  Defaults to false.
      */

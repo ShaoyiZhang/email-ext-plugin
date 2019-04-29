@@ -44,6 +44,8 @@ public class EmailType {
 
     private boolean sendToDevelopers;
 
+    private boolean sendToRequester;
+
     /**
      * Specifies whether or not we should send this email to all developers
      * since the last success.
@@ -64,6 +66,7 @@ public class EmailType {
         attachBuildLog = false;
         compressBuildLog = false;
         sendToDevelopers = false;
+        sendToRequester = false;
         includeCulprits = false;
         sendToRecipientList = false;
     }
@@ -114,6 +117,14 @@ public class EmailType {
 
     public void setSendToDevelopers(boolean sendToDevelopers) {
         this.sendToDevelopers = sendToDevelopers;
+    }
+
+    public boolean getSendToRequester() {
+        return sendToRequester;
+    }
+
+    public void setSendToRequester(boolean sendToRequester) {
+        this.sendToRequester = sendToRequester;
     }
 
     public boolean getIncludeCulprits() {

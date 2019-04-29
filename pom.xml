@@ -9,11 +9,11 @@
     </parent>
 
     <groupId>org.hudsonci.plugins</groupId>
-    <artifactId>email-ext</artifactId>
+    <artifactId>email-ext-patched</artifactId>
     <packaging>hpi</packaging>
     <version>2.12-h-2-SNAPSHOT</version>
-    <name>Hudson Email Extension Plugin</name>
-    <description>Hudson Email Extension Plugin</description>
+    <name>Hudson Email Extension Plugin Patched</name>
+    <description>Hudson Email Extension Plugin Patched with Requester</description>
     <url>http://wiki.hudson-ci.org/display/HUDSON/Email-ext+plugin</url>
 
     <properties>
