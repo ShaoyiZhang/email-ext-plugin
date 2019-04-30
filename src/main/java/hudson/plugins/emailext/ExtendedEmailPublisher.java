@@ -4,8 +4,10 @@ import hudson.EnvVars;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
+import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
 import hudson.model.Cause;
+import hudson.model.Hudson;
 import hudson.model.Result;
 import hudson.model.User;
 import hudson.plugins.emailext.plugins.ContentBuilder;
@@ -46,7 +48,7 @@ import javax.mail.internet.MimeMultipart;
  */
 public class ExtendedEmailPublisher extends Notifier {
 
-    private static final Logger LOGGER = Logger.getLogger(Mailer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ExtendedEmailPublisher.class.getName());
 
     public static final Map<String, EmailTriggerDescriptor> EMAIL_TRIGGER_TYPE_MAP
         = new HashMap<String, EmailTriggerDescriptor>();
@@ -327,7 +329,14 @@ public class ExtendedEmailPublisher extends Notifier {
 
         // Get the requester of this build
         if (type.getSendToRequester()) {
-            Cause.UserCause uc = build.getCause(Cause.UserCause.class);
+            AbstractBuild<?,?> cur = build;
+            Cause.UpstreamCause upc = build.getCause(Cause.UpstreamCause.class);
+            while (upc != null) {
+                AbstractProject<?,?> p = (AbstractProject<?,?>) Hudson.getInstance().getItem(upc.getUpstreamProject());
+                cur = p.getBuildByNumber(upc.getUpstreamBuild());
+                upc = cur.getCause(Cause.UpstreamCause.class);
+            }
+            Cause.UserCause uc = cur.getCause(Cause.UserCause.class);
             User user = User.get(uc.getUserName());
             if (user != null) {
                 String addr = user.getProperty(Mailer.UserProperty.class).getAddress();

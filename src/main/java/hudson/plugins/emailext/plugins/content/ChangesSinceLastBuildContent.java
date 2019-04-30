@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("PMD.EmptyCatchBlock")
 public class ChangesSinceLastBuildContent
     implements EmailContent
 {
